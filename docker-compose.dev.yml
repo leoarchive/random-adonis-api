@@ -1,0 +1,45 @@
+version: "3.8"
+
+services:
+    api:
+        container_name: random-node-api
+        build: .
+        command: bash -c "yarn install && node ace migration:run && node ace db:seed && node ace serve --watch"
+        ports:
+            - "3333:3333"
+        volumes:
+            - .:/home/api
+            - /home/api/node_modules
+        depends_on:
+            - postgres
+        networks:
+            - random-node-network
+
+    pgadmin:
+        container_name: random-node-pgadmin
+        image: dpage/pgadmin4
+        restart: unless-stopped
+        environment:
+            PGADMIN_DEFAULT_EMAIL: 'admin@admin.com.br'
+            PGADMIN_DEFAULT_PASSWORD: root
+        ports:
+            - 16543:80
+        depends_on:
+            - postgres
+        networks:
+            - random-node-network
+
+    postgres:
+        container_name: random-node-postgres
+        image: postgres:latest
+        ports:
+            - "3500:5432"
+        environment:
+            POSTGRES_USER: user
+            POSTGRES_PASSWORD: root
+            POSTGRES_DB: db
+        networks:
+            - random-node-network
+
+networks:
+    random-node-network:
