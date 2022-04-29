@@ -30,12 +30,6 @@ export default class FuncionariosController {
 
     const body = await request.validate({ schema: taskSchema, messages: messages })
 
-    if (await Funcionario.findBy('email', body.email)) {
-      return {
-        message: 'Email já cadastrado,',
-      }
-    }
-
     const avatar = request.file('avatar', this.avatarValidate)
 
     if (avatar) {
