@@ -19,4 +19,7 @@ export default class Reserva extends BaseModel {
 
   @column()
   public vendedorId: number
+
+  @column()
+  public veiculoId: number
 }

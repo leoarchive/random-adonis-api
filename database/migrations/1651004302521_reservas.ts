@@ -9,7 +9,8 @@ export default class Reservas extends BaseSchema {
       table.timestamp('data_reserva')
       table.string('valor_venda')
       table.string('vendedor')
-      table.integer('vendedor_id').unsigned().references('funcionarios.id').onDelete('CASCADE') // delete post when user is deleted
+      table.integer('vendedor_id').unsigned().references('funcionarios.id')
+      table.integer('veiculo_id').unsigned().references('veiculos.id')
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
        */

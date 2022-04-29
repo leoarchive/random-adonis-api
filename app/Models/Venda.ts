@@ -22,4 +22,7 @@ export default class Venda extends BaseModel {
 
   @column()
   public vendedorId: number
+
+  @column()
+  public veiculoId: number
 }
