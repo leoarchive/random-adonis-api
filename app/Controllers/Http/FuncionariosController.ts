@@ -6,6 +6,7 @@ import { rules, schema } from '@ioc:Adonis/Core/Validator'
 import Hash from '@ioc:Adonis/Core/Hash'
 import Venda from 'App/Models/Venda'
 import Reserva from 'App/Models/Reserva'
+import { DateTime } from 'luxon'
 
 export default class FuncionariosController {
   private avatarValidate = {
@@ -66,7 +67,11 @@ export default class FuncionariosController {
     const funcionario = await Funcionario.findOrFail(params.id)
 
     return {
-      data: funcionario,
+      data: {
+        ...funcionario['$attributes'],
+        dataFormatadaCreate: DateTime.fromISO(funcionario.createdAt.toISO()).toFormat('dd/LL/yyyy'),
+        dataFormatadaUpdate: DateTime.fromISO(funcionario.updatedAt.toISO()).toFormat('dd/LL/yyyy'),
+      },
     }
   }
 

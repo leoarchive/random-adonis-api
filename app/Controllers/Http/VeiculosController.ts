@@ -1,6 +1,7 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { schema } from '@ioc:Adonis/Core/Validator'
 import Veiculo from 'App/Models/Veiculo'
+import { DateTime } from 'luxon'
 
 export default class VeiculosController {
   public async store({ request, response }: HttpContextContract) {
@@ -39,9 +40,12 @@ export default class VeiculosController {
 
   public async show({ params }: HttpContextContract) {
     const veiculo = await Veiculo.findOrFail(params.id)
-
     return {
-      data: veiculo,
+      data: {
+        ...veiculo['$attributes'],
+        dataFormatadaCreate: DateTime.fromISO(veiculo.createdAt.toISO()).toFormat('dd/LL/yyyy'),
+        dataFormatadaUpdate: DateTime.fromISO(veiculo.updatedAt.toISO()).toFormat('dd/LL/yyyy'),
+      },
     }
   }
 
